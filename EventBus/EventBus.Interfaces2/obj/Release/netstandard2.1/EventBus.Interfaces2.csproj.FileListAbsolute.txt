@@ -1,0 +1,10 @@
+/Users/pavelkorolev/Documents/GitHub/EventBus/EventBus.Interfaces2/bin/Release/netstandard2.1/EventBus.Interfaces2.deps.json
+/Users/pavelkorolev/Documents/GitHub/EventBus/EventBus.Interfaces2/bin/Release/netstandard2.1/EventBus.Interfaces2.dll
+/Users/pavelkorolev/Documents/GitHub/EventBus/EventBus.Interfaces2/bin/Release/netstandard2.1/EventBus.Interfaces2.pdb
+/Users/pavelkorolev/Documents/GitHub/EventBus/EventBus.Interfaces2/obj/Release/netstandard2.1/EventBus.Interfaces2.csproj.AssemblyReference.cache
+/Users/pavelkorolev/Documents/GitHub/EventBus/EventBus.Interfaces2/obj/Release/netstandard2.1/EventBus.Interfaces2.GeneratedMSBuildEditorConfig.editorconfig
+/Users/pavelkorolev/Documents/GitHub/EventBus/EventBus.Interfaces2/obj/Release/netstandard2.1/EventBus.Interfaces2.AssemblyInfoInputs.cache
+/Users/pavelkorolev/Documents/GitHub/EventBus/EventBus.Interfaces2/obj/Release/netstandard2.1/EventBus.Interfaces2.AssemblyInfo.cs
+/Users/pavelkorolev/Documents/GitHub/EventBus/EventBus.Interfaces2/obj/Release/netstandard2.1/EventBus.Interfaces2.csproj.CoreCompileInputs.cache
+/Users/pavelkorolev/Documents/GitHub/EventBus/EventBus.Interfaces2/obj/Release/netstandard2.1/EventBus.Interfaces2.dll
+/Users/pavelkorolev/Documents/GitHub/EventBus/EventBus.Interfaces2/obj/Release/netstandard2.1/EventBus.Interfaces2.pdb
