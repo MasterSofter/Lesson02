@@ -8,30 +8,33 @@ public class AISensor : MonoBehaviour
 {
     private float _distance = 4;
     private float _angle = 45;
-    private float _height = 1.0f;
-
+    [SerializeField] private float _height = 4.0f;
+    [SerializeField] private float _deltaHeight = 5;
     [SerializeField] private Color _meshColor = Color.red;
     [SerializeField] private int _scanFrequency = 10;
     [SerializeField] LayerMask _layers;
     [SerializeField] LayerMask _occlusionLayers;
     [SerializeField] List<GameObject> _objects = new List<GameObject>();
-    private List<GameObject> _trushObjects = new List<GameObject>();
-    private IEventBus _eventBus;
+    [SerializeField] GameObject _gameObjectRoot;
 
+
+    private List<GameObject> _trushObjects = new List<GameObject>();
     private Collider[] _colliders = new Collider[50];
     private Mesh _mesh;
+    private IEventBus _eventBus;
+
+  
 
     private int _count;
     private float _scanIntervalTime, _scanTimer;
 
     private bool _lostGoalObject = false;
 
-    public void Init(IEventBus eventBus, float distance, float angle, float height)
+    public void Init(IEventBus eventBus, float distance, float angle)
     {
         _eventBus = eventBus;
         _distance = distance;
         _angle = angle;
-        _height = height;
     }
 
     void Start() {
@@ -47,7 +50,10 @@ public class AISensor : MonoBehaviour
             Scan();
         }
     }
+
     
+
+
     Mesh CreateWedgeMesh() {
         Mesh mesh = new Mesh();
 
@@ -58,13 +64,13 @@ public class AISensor : MonoBehaviour
         Vector3[] vertices = new Vector3[numVertices];
         int[] triangles = new int[numVertices];
 
-        Vector3 bottomCenter = Vector3.zero;
-        Vector3 bottomLeft = Quaternion.Euler(0, -_angle, 0) * Vector3.forward * _distance;
-        Vector3 bottomRight = Quaternion.Euler(0, _angle, 0) * Vector3.forward * _distance;
+        Vector3 bottomCenter = -Vector3.up * _height;
+        Vector3 bottomLeft = Quaternion.Euler(0, -_angle, 0) * Vector3.forward * _distance - Vector3.up * (_height + _deltaHeight);
+        Vector3 bottomRight = Quaternion.Euler(0, _angle, 0) * Vector3.forward * _distance - Vector3.up * (_height + _deltaHeight);
 
-        Vector3 topCenter = bottomCenter + Vector3.up * _height;
-        Vector3 topRight = bottomRight + Vector3.up * _height;
-        Vector3 topLeft = bottomLeft + Vector3.up * _height;
+        Vector3 topCenter = Vector3.up * _height;
+        Vector3 topRight = Quaternion.Euler(0, _angle, 0) * Vector3.forward * _distance + Vector3.up * (_height + _deltaHeight);
+        Vector3 topLeft = Quaternion.Euler(0, -_angle, 0) * Vector3.forward * _distance + Vector3.up * (_height + _deltaHeight);
 
         int vert = 0;
 
@@ -90,11 +96,11 @@ public class AISensor : MonoBehaviour
         float currentAngle = -_angle;
         float deltaAngle = (_angle * 2) / segments;
         for(int i = 0; i < segments; ++i) {
-            bottomLeft = Quaternion.Euler(0, currentAngle, 0) * Vector3.forward * _distance;
-            bottomRight = Quaternion.Euler(0, currentAngle + deltaAngle, 0) * Vector3.forward * _distance;
+            bottomLeft = Quaternion.Euler(0, currentAngle, 0) * Vector3.forward * _distance - Vector3.up * (_height + _deltaHeight);
+            bottomRight = Quaternion.Euler(0, currentAngle + deltaAngle, 0) * Vector3.forward * _distance - Vector3.up * (_height + _deltaHeight);
            
-            topRight = bottomRight + Vector3.up * _height;
-            topLeft = bottomLeft + Vector3.up * _height;
+            topRight = Quaternion.Euler(0, currentAngle + deltaAngle, 0) * Vector3.forward * _distance + Vector3.up * (_height + _deltaHeight);
+            topLeft = Quaternion.Euler(0, currentAngle, 0) * Vector3.forward * _distance + Vector3.up * (_height + _deltaHeight);
 
             //far side
             vertices[vert++] = bottomLeft;
@@ -130,7 +136,7 @@ public class AISensor : MonoBehaviour
         return mesh;
     }
     private void OnValidate(){
-        
+        _mesh = CreateWedgeMesh();
     }
     private void OnDrawGizmos()
     {
@@ -193,7 +199,7 @@ public class AISensor : MonoBehaviour
         Vector3 direction = dest - origin;
 
 
-        if(direction.y < 0 || direction.y > _height || direction.magnitude >= _distance) {
+        if(direction.y < (-_height - _deltaHeight) || direction.y > (_height + _deltaHeight) || direction.magnitude >= _distance) {
             return false;
         }
 

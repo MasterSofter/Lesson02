@@ -35,14 +35,14 @@ namespace InfectedAI
             //проверяем достигнута ли контрольная точка
             if (achievedPoint)
             {
-                indexOfPatrolPoints++;
+                indexOfPatrolPoints = Random.RandomRange(0, _patrolPoints.Length - 1);
                 achievedPoint = false;
                 _eventBus.GetEvent<FinishCurrentInputEvent>().Publish(EventArg.Empty);
                 return (new Vector3(), _gameObjectRoot.transform.rotation, false);
             }
 
             distance = _patrolPoints[indexOfPatrolPoints].position - _gameObjectRoot.transform.position;
-            if (distance.magnitude <= 0.5f)
+            if (distance.magnitude <= 1f)
                 achievedPoint = true;
 
             

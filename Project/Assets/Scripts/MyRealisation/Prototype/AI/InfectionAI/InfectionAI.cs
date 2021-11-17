@@ -54,13 +54,13 @@ namespace InfectedAI {
             switch (_dificult)
             {
                 case Dificult.Easy:
-                    _aISensor.Init(_eventBus, 5, 45, 1);
+                    _aISensor.Init(_eventBus, 5, 45);
                     break;
                 case Dificult.Medium:
-                    _aISensor.Init(_eventBus, 8, 90, 1);
+                    _aISensor.Init(_eventBus, 8, 90);
                     break;
                 case Dificult.Hard:
-                    _aISensor.Init(_eventBus, 12, 180, 1);
+                    _aISensor.Init(_eventBus, 12, 180);
                     break;
             }
 

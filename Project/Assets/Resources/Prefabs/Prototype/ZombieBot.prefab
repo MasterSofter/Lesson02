@@ -1013,7 +1013,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2864999657171682826}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.37, z: 0}
+  m_LocalPosition: {x: 0, y: 0.932, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2326179023303428308}
@@ -1031,9 +1031,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a13c2bd57afc54d48801dda32a31e386, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _distance: 6
-  _angle: 45
-  _height: 2.31
+  _height: 1
+  _deltaHeight: 2.08
   _meshColor: {r: 1, g: 0, b: 0, a: 0.21176471}
   _scanFrequency: 10
   _layers:
@@ -1043,6 +1042,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 131072
   _objects: []
+  _gameObjectRoot: {fileID: 3099584660851069550}
 --- !u!1 &2873880486681502150
 GameObject:
   m_ObjectHideFlags: 0
@@ -1166,7 +1166,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3099584660851069550}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 27.22, y: 6.053587, z: -32.9}
+  m_LocalPosition: {x: 27.22, y: 5.6445, z: -32.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2628647763179909434}
@@ -1230,6 +1230,7 @@ MonoBehaviour:
   _aISensor: {fileID: 2864999657171682836}
   _patrolPoints: []
   _navMeshAgent: {fileID: 2864999657241750055}
+  _dificult: 0
 --- !u!195 &2864999657241750055
 NavMeshAgent:
   m_ObjectHideFlags: 0
