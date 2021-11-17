@@ -6,7 +6,7 @@ namespace Player
     public class PlayerControllerInput : PlayerInput
     {
         private GameObject _gameObjectRoot;
-       
+        private GameObject _cameraBase;
         
         private IEventBus _eventBus;
 
@@ -14,11 +14,11 @@ namespace Player
         private float _turnSmoothTime = 0.1f;
         private float _targetAngle, _angle;
 
-        public void Init(IEventBus eventBus, GameObject gameObjectRoot)
+        public void Init(IEventBus eventBus, GameObject gameObjectRoot, GameObject cameraBase)
         {
             _eventBus = eventBus;
             _gameObjectRoot = gameObjectRoot;
-
+            _cameraBase = cameraBase;
         }
 
         public override (Vector3 moveDirection, Quaternion viewDirection, bool shoot) CurrentInput()
@@ -37,7 +37,10 @@ namespace Player
                 _eventBus.GetEvent<ButtonRealiseEvent>().Publish(EnumButton.Shift);
 
 
-            moveDirection = (horizontal * _gameObjectRoot.transform.right + vertical * _gameObjectRoot.transform.forward).normalized;
+            moveDirection = Vector3.ProjectOnPlane((horizontal * _cameraBase.transform.right + vertical * _cameraBase.transform.forward).normalized, Vector3.up);
+
+
+            //moveDirection = (horizontal * _gameObjectRoot.transform.right + vertical * _gameObjectRoot.transform.forward).normalized;
 
 
             if (moveDirection.magnitude > 0.5f)

@@ -8,6 +8,7 @@ namespace Player {
     public class PlayerController : MonoBehaviour
     {
         [SerializeField] private Animator _animator;
+        [SerializeField] private GameObject _cameraBase;
 
         private PlayerControllerInput _playerControllerInput;
         private PlayerInput _currentPlayerInput;
@@ -27,12 +28,14 @@ namespace Player {
             _eventBus.GetEvent<ButtonRealiseEvent>().Subscribe(OnRealiseSomeButton);
 
             _playerControllerInput = gameObject.AddComponent<PlayerControllerInput>();
-            _playerControllerInput.Init(_eventBus, gameObject);
+            _playerControllerInput.Init(_eventBus, gameObject, _cameraBase);
 
             _currentPlayerInput = _playerControllerInput;
             _currentState = EnumStates.Idle;
         }
 
+
+        //логика при отпускании кнопкк
         private void OnRealiseSomeButton(EnumButton enumButton)
         {
             switch (enumButton)
@@ -45,6 +48,7 @@ namespace Player {
             }
         }
 
+        //логика при нажатии на кнопку
         private void OnPressedSomeButton(EnumButton enumButton)
         {
             switch (enumButton)
@@ -99,8 +103,6 @@ namespace Player {
                 _viewDirection = viewDirection;
                 _shoot = shoot;
 
-
-                //повернуть в направлении viewDirection
                 gameObject.transform.rotation = viewDirection;
             }
         }
