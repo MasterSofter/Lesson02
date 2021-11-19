@@ -2,7 +2,8 @@
 namespace Player {
     public enum EnumButton
     {
-        Shift
+        Shift,
+        MouseButtonRight
     }
 }
 

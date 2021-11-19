@@ -42,7 +42,7 @@ namespace InfectedAI
             }
 
             distance = _patrolPoints[indexOfPatrolPoints].position - _gameObjectRoot.transform.position;
-            if (distance.magnitude <= 1f)
+            if (distance.magnitude <= 1.4f)
                 achievedPoint = true;
 
             

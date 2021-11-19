@@ -7,7 +7,7 @@ namespace InfectedAI
     public enum EnumStates {
         Sleep,
         Patrol,
-        VisibleGoal
+        VisibleGoal,
     }
 
 }

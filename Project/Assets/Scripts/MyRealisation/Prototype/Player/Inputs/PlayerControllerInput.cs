@@ -5,14 +5,14 @@ namespace Player
 {
     public class PlayerControllerInput : PlayerInput
     {
-        private GameObject _gameObjectRoot;
-        private GameObject _cameraBase;
-        
-        private IEventBus _eventBus;
+        protected GameObject _gameObjectRoot;
+        protected GameObject _cameraBase;
 
-        private float _turnSmoothVelocity;
-        private float _turnSmoothTime = 0.1f;
-        private float _targetAngle, _angle;
+        protected IEventBus _eventBus;
+
+        protected float _turnSmoothVelocity;
+        protected float _turnSmoothTime = 0.1f;
+        protected float _targetAngle, _angle;
 
         public void Init(IEventBus eventBus, GameObject gameObjectRoot, GameObject cameraBase)
         {
@@ -27,33 +27,35 @@ namespace Player
             Quaternion viewDirection = new Quaternion();
             bool shoot = false;
 
-            float horizontal = UnityEngine.Input.GetAxisRaw("Horizontal");
-            float vertical = UnityEngine.Input.GetAxisRaw("Vertical");
-            float shift = UnityEngine.Input.GetAxisRaw("Shift");
 
             if (UnityEngine.Input.GetKeyDown(KeyCode.LeftShift))
                 _eventBus.GetEvent<ButtonPressEvent>().Publish(EnumButton.Shift);
             if(UnityEngine.Input.GetKeyUp(KeyCode.LeftShift))
                 _eventBus.GetEvent<ButtonRealiseEvent>().Publish(EnumButton.Shift);
 
+            if (UnityEngine.Input.GetMouseButtonDown(1))
+                _eventBus.GetEvent<ButtonPressEvent>().Publish(EnumButton.MouseButtonRight);
+            if (UnityEngine.Input.GetMouseButtonUp(1))
+                _eventBus.GetEvent<ButtonRealiseEvent>().Publish(EnumButton.MouseButtonRight);
 
-            moveDirection = Vector3.ProjectOnPlane((horizontal * _cameraBase.transform.right + vertical * _cameraBase.transform.forward).normalized, Vector3.up);
-
-
-            //moveDirection = (horizontal * _gameObjectRoot.transform.right + vertical * _gameObjectRoot.transform.forward).normalized;
+            float horizontal = UnityEngine.Input.GetAxisRaw("Horizontal");
+            float vertical = UnityEngine.Input.GetAxisRaw("Vertical");
+            moveDirection = new Vector3(horizontal, 0, vertical);
 
 
             if (moveDirection.magnitude > 0.5f)
             {
-                _targetAngle = Mathf.Atan2(moveDirection.x, moveDirection.z) * Mathf.Rad2Deg;
+                Vector3 vecViewDirection = Vector3.ProjectOnPlane((horizontal * _cameraBase.transform.right + vertical * _cameraBase.transform.forward).normalized, Vector3.up);
+
+                _targetAngle = Mathf.Atan2(vecViewDirection.x, vecViewDirection.z) * Mathf.Rad2Deg;
                 _angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetAngle, ref _turnSmoothVelocity, _turnSmoothTime);
                 viewDirection = Quaternion.Euler(0f, _angle, 0f);
+
             }
             else
-                return (Vector3.zero, _gameObjectRoot.transform.rotation, false); 
+                return (Vector3.zero, _gameObjectRoot.transform.rotation, false);
 
             return (moveDirection, viewDirection, shoot);
-
         }
     }
 
