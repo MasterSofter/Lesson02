@@ -24,11 +24,11 @@ TagManager:
   - Enemy
   - Obstacle
   - Player
-  - 
+  - Zombie
   - Bullet
-  - 
-  - 
-  - 
+  - ObstaclesList
+  - ZombiesList
+  - Point
   - 
   - 
   - 

@@ -7,8 +7,8 @@ namespace Game
 {
     public class LevelMap : MonoBehaviour
     {
-        [SerializeField] private GameObject _prefab;
-
+        //[SerializeField] private GameObject _prefab;
+        private static GameObject _prefubGameObject;
         [SerializeField] private Transform _root;
 
         [SerializeField] private List<Vector3> _points;
@@ -19,14 +19,15 @@ namespace Game
         private static void InstantiatePoints(MenuCommand command)
         {
             Clear(command);
-            
+            _prefubGameObject = Resources.Load<GameObject>("Prefabs/Wall");
+
             var levelMap = command.context as LevelMap;
             if (levelMap == null)
                 return;
 
             foreach (var p in levelMap._points.Distinct())
             {
-                var prefab = PrefabUtility.InstantiatePrefab(levelMap._prefab, levelMap._root) as GameObject;
+                var prefab = PrefabUtility.InstantiatePrefab(_prefubGameObject, levelMap._root) as GameObject;
                 prefab.transform.position = p;
             }
         }

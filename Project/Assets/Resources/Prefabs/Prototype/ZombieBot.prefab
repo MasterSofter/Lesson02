@@ -1151,7 +1151,8 @@ GameObject:
   - component: {fileID: 2864999657241750040}
   - component: {fileID: 2864999657241750052}
   - component: {fileID: 2864999657241750055}
-  m_Layer: 0
+  - component: {fileID: 3011175383406797209}
+  m_Layer: 19
   m_Name: ZombieBot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1253,6 +1254,26 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &3011175383406797209
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3099584660851069550}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3a2e3685c5a04134be95cca69487f47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PrefubPath: Prefabs/Prototype/ZombieBot
+  Name: ZombieBot
+  Tag: Untagged
+  Layer: 19
+  Position: {x: 27.22, y: 5.6445, z: -32.9}
+  Rotation: {x: -0, y: -0, z: -0, w: 1}
+  LocalScale: {x: 1, y: 1, z: 1}
+  ParentObjectName: 
 --- !u!1 &3459603343771688884
 GameObject:
   m_ObjectHideFlags: 0

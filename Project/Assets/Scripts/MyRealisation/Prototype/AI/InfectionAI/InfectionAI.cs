@@ -19,10 +19,11 @@ namespace InfectedAI {
         [SerializeField] private GameObject _gameObjectRoot;
         [SerializeField] private Animator _animator;
         [SerializeField] private AISensor _aISensor;
-        [SerializeField] private Transform[] _patrolPoints;
         [SerializeField] private NavMeshAgent _navMeshAgent;
 
         [SerializeField] Dificult _dificult; //сложность ИИ
+
+        private Transform[] _patrolPoints;
 
         private AIPatrolInput      _aIPatrolInput;      //ИИ патруля
         private AISleepInput       _aISleepInput;       //ИИ ожидания
@@ -46,6 +47,9 @@ namespace InfectedAI {
             _aIPatrolInput = gameObject.AddComponent<AIPatrolInput>();
             _aISleepInput = gameObject.AddComponent<AISleepInput>();
             _aIFollowToAimInput = gameObject.AddComponent<AIFollowToAimInput>();
+
+            int layerPoint = LayerMask.NameToLayer("Point");
+            _patrolPoints = FindObjectsOfType<Transform>().Where(i => i.gameObject.layer == layerPoint).ToArray();
 
             _aIPatrolInput.Init(_eventBus, _patrolPoints, _gameObjectRoot, _navMeshAgent);
             _aISleepInput.Init(_eventBus, _gameObjectRoot);
