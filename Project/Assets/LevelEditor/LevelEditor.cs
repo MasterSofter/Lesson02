@@ -44,15 +44,35 @@ namespace LevelEditor {
 
         private void Save(string directoryPath, int layer)
         {
+            _isError = false;
             if (_levelStorage == null)
                 InitLevelStorage();
+
+            if(_directoryPath == null) {
+                _isError = true;
+                _errorMessage = "The path to directory is empty! Please check the directory path.";
+                return;
+            }
+
+            if (!Directory.Exists(directoryPath))
+                Directory.CreateDirectory(directoryPath);
+
              _levelStorage.Save(directoryPath, layer);
         }
         private void Load(string directoryPath, int layer) {
-            if(_levelStorage == null) 
+            _isError = false;
+
+            if (_levelStorage == null) 
                 InitLevelStorage();
 
-            if (!Directory.Exists(directoryPath))
+            if (_directoryPath == null)
+            {
+                _isError = true;
+                _errorMessage = "The path to directory is empty! Please check the directory path.";
+                return;
+            }
+
+            if (!Directory.Exists(_directoryPath))
             {
                 _isError = true;
                 _errorMessage = "Doesn't exists the directory. Please check the directory path";
@@ -116,29 +136,43 @@ namespace LevelEditor {
 
         private void SaveLevel(string directoryPath)
         {
+            _isError = false;
             if (_levelStorage == null)
                 InitLevelStorage();
 
-            if (_directoryPath == null || !Directory.Exists(_directoryPath))
+            if (_directoryPath == null)
             {
                 _isError = true;
-                _errorMessage = "Doesn't exists the current directory. Please check the directory.";
+                _errorMessage = "The path to directory is empty! Please check the directory path.";
                 return;
             }
+
+            if (!Directory.Exists(directoryPath))
+                Directory.CreateDirectory(directoryPath);
+      
              _levelStorage.SaveLevel(directoryPath);
         }
         private void LoadLevel(string directoryPath)
         {
+            _isError = false;
             if (_levelStorage == null)
                 InitLevelStorage();
 
-            if (_directoryPath == null || !Directory.Exists(_directoryPath)) {
+            if (_directoryPath == null)
+            {
                 _isError = true;
-                _errorMessage = "Doesn't exists the current directory. Please check the directory.";
+                _errorMessage = "The path to directory is empty! Please check the directory path.";
                 return;
             }
 
-             _levelStorage.LoadLevel(directoryPath);
+            if (!Directory.Exists(_directoryPath))
+            {
+                _isError = true;
+                _errorMessage = "Doesn't exists the directory. Please check the directory path";
+                return;
+            }
+
+            _levelStorage.LoadLevel(directoryPath);
         }
         private void ClearLevel()
         {
