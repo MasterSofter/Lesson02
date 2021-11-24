@@ -17,15 +17,17 @@ namespace LevelEditor {
 
         private void Update()
         {
+            if (Application.isPlaying) return;
+
             Name = gameObject.name;
             Position = gameObject.transform.position;
             LocalScale = gameObject.transform.localScale;
             Rotation = gameObject.transform.rotation;
             Tag = gameObject.tag;
             Layer = gameObject.layer;
+
             if(gameObject.transform.parent != null)
                 ParentObjectName = gameObject.transform.parent.name;
-            Debug.Log("Я работаю");
         }
     }
 #endif
