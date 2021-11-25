@@ -15,6 +15,7 @@ namespace LevelEditor {
             int layerZombie = LayerMask.NameToLayer("Zombie");
             int layerFloor = LayerMask.NameToLayer("Floor");
             int layerPoints = LayerMask.NameToLayer("Point");
+            int layerPlayer = LayerMask.NameToLayer("Player");
 
 
             GameObject[] gameObj = FindObjectsOfType<GameObject>().Where(i => i.layer == layer).ToArray<GameObject>();
@@ -50,6 +51,8 @@ namespace LevelEditor {
                 File.WriteAllLines($"{directoryPath}/Floor.json", data); //Запись в файл
             if (layer == layerPoints)
                 File.WriteAllLines($"{directoryPath}/Points.json", data); //Запись в файл
+            if(layer == layerPlayer)
+                File.WriteAllLines($"{directoryPath}/Player.json", data); //Запись в файл
         }
         public override void Load(string directoryPath, int layer)
         {
@@ -58,20 +61,41 @@ namespace LevelEditor {
             int layerZombie = LayerMask.NameToLayer("Zombie");
             int layerFloor = LayerMask.NameToLayer("Floor");
             int layerPoints = LayerMask.NameToLayer("Point");
+            int layerPlayer = LayerMask.NameToLayer("Player");
 
             string[] data;
             if (layer == layerObstacle)
-                data = File.ReadAllLines($"{directoryPath}/Obstacles.json");
-
+            {
+                if (File.Exists($"{directoryPath}/Obstacles.json"))
+                    data = File.ReadAllLines($"{directoryPath}/Obstacles.json");
+                else return;
+            }
             else if (layer == layerZombie)
-                data = File.ReadAllLines($"{directoryPath}/Zombies.json");
-
+            {
+                if (File.Exists($"{directoryPath}/Zombies.json"))
+                    data = File.ReadAllLines($"{directoryPath}/Zombies.json");
+                else return;
+            }
             else if (layer == layerFloor)
-                data = File.ReadAllLines($"{directoryPath}/Floor.json");
-            else if (layer == layerPoints)         
-                data = File.ReadAllLines($"{directoryPath}/Points.json");
-            else
-                return;
+            {
+                if (File.Exists($"{directoryPath}/Floor.json"))
+                    data = File.ReadAllLines($"{directoryPath}/Floor.json");
+                else return;
+            }
+            else if (layer == layerPoints)
+            {
+                if (File.Exists($"{directoryPath}/Points.json"))
+                    data = File.ReadAllLines($"{directoryPath}/Points.json");
+                else return;
+            }
+            else if (layer == layerPlayer)
+            {
+                if (File.Exists($"{directoryPath}/Player.json"))
+                    data = File.ReadAllLines($"{directoryPath}/Player.json");
+                else return;
+            }
+            else return;
+
 
             List<EditorObjectJson> list = new List<EditorObjectJson>();
             for (int i = 0; i < data.Length; i++)
@@ -90,6 +114,8 @@ namespace LevelEditor {
                 InstantiatePrefubFloor(list);
             else if (layer == layerPoints)
                 InstantiatePrefubsPoint(list);
+            else if (layer == layerPlayer)
+                InstantiatePrefubsPlayer(list);
         }
         public override void Clear(int layer)
         {
@@ -105,11 +131,14 @@ namespace LevelEditor {
             int layerZombie = LayerMask.NameToLayer("Zombie");
             int layerFloor = LayerMask.NameToLayer("Floor");
             int layerPoints = LayerMask.NameToLayer("Point");
+            int layerPlayer = LayerMask.NameToLayer("Player");
+
 
             Save(directoryPath, layerObstacle);
             Save(directoryPath, layerZombie);
             Save(directoryPath, layerFloor);
             Save(directoryPath, layerPoints);
+            Save(directoryPath, layerPlayer);
         }
         public override void LoadLevel(string directoryPath)
         {
@@ -119,11 +148,13 @@ namespace LevelEditor {
             int layerZombie = LayerMask.NameToLayer("Zombie");
             int layerFloor = LayerMask.NameToLayer("Floor");
             int layerPoints = LayerMask.NameToLayer("Point");
+            int layerPlayer = LayerMask.NameToLayer("Player");
 
             Load(directoryPath, layerObstacle);
             Load(directoryPath, layerZombie);
             Load(directoryPath, layerFloor);
             Load(directoryPath, layerPoints);
+            Load(directoryPath, layerPlayer);
         }
         public override void ClearLevel()
         {
@@ -131,11 +162,13 @@ namespace LevelEditor {
             int layerZombie = LayerMask.NameToLayer("Zombie");
             int layerFloor = LayerMask.NameToLayer("Floor");
             int layerPoints = LayerMask.NameToLayer("Point");
+            int layerPlayer = LayerMask.NameToLayer("Player");
 
             Clear(layerObstacle);
             Clear(layerZombie);
             Clear(layerFloor);
             Clear(layerPoints);
+            Clear(layerPlayer);
 
         }
 
@@ -281,6 +314,42 @@ namespace LevelEditor {
                 }
             }
         }
+        private void InstantiatePrefubsPlayer(List<EditorObjectJson> list)
+        {
+            foreach (var item in list)
+            {
+                if (!IsExistGameObjectOnScene(item))
+                {
+                    GameObject prefubGameObject = Resources.Load<GameObject>(item.PrefubPath);
+
+                    GameObject rootLevelObject = FindObjectsOfType<GameObject>().FirstOrDefault(i => i.name == "[Level]");
+                    GameObject rootGameObjectFloor = FindObjectsOfType<GameObject>().FirstOrDefault(i => i.name == "[Player]");
+
+                    if (rootLevelObject == null)
+                    {
+                        rootLevelObject = new GameObject();
+                        rootLevelObject.name = "[Level]";
+                    }
+
+                    if (rootGameObjectFloor == null)
+                    {
+                        rootGameObjectFloor = new GameObject();
+                        rootGameObjectFloor.name = "[Player]";
+                        rootGameObjectFloor.transform.parent = rootLevelObject.transform;
+                    }
+                    else if (rootGameObjectFloor.transform.parent != rootLevelObject)
+                        rootGameObjectFloor.transform.parent = rootLevelObject.transform;
+
+                    var prefab = PrefabUtility.InstantiatePrefab(prefubGameObject, rootGameObjectFloor.transform) as GameObject;
+                    prefab.transform.position = item.Position;
+                    prefab.transform.rotation = item.Rotation;
+                    prefab.transform.localScale = item.LocalScale;
+                    prefab.transform.parent.name = rootGameObjectFloor.name;
+                    prefab.name = item.Name;
+                }
+            }
+        }
+
         private bool IsExistGameObjectOnScene(EditorObjectJson editorObject)
         {
             var item = FindObjectsOfType<GameObject>().FirstOrDefault

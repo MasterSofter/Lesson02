@@ -1,0 +1,16 @@
+{
+    "name": "AIAssembly",
+    "rootNamespace": "",
+    "references": [
+        "GUID:188d375f108e54f7fae940f27cbc66b2"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1229,7 +1229,6 @@ MonoBehaviour:
   _gameObjectRoot: {fileID: 3099584660851069550}
   _animator: {fileID: 8550105520852865710}
   _aISensor: {fileID: 2864999657171682836}
-  _patrolPoints: []
   _navMeshAgent: {fileID: 2864999657241750055}
   _dificult: 0
 --- !u!195 &2864999657241750055

@@ -82,6 +82,7 @@ namespace LevelEditor {
             int layerZombie = LayerMask.NameToLayer("Zombie");
             int layerFloor = LayerMask.NameToLayer("Floor");
             int layerPoints = LayerMask.NameToLayer("Point");
+            int layerPlayer = LayerMask.NameToLayer("Player");
 
             if (layer == layerObstacle)
             {
@@ -123,7 +124,15 @@ namespace LevelEditor {
                 }
                  _levelStorage.Load(directoryPath, layerPoints);
             }
-            else
+            else if(layer == layerPlayer) {
+                if (!File.Exists($"{directoryPath}/Player.json"))
+                {
+                    _isError = true;
+                    _errorMessage = "Doesn't exists the JSON file. Please check or create the file Player.json";
+                    return;
+                }
+                _levelStorage.Load(directoryPath, layerPoints);
+            }
                 return;
         }
         private void Clear(int layer)
@@ -152,7 +161,7 @@ namespace LevelEditor {
       
              _levelStorage.SaveLevel(directoryPath);
         }
-        private void LoadLevel(string directoryPath)
+        public static void LoadLevel(string directoryPath)
         {
             _isError = false;
             if (_levelStorage == null)
@@ -193,7 +202,7 @@ namespace LevelEditor {
                 return;
             }
 
-            _selectedModule = GUI.Toolbar(new Rect(20, 10, 420, 20), _selectedModule, new string[] { "Level" ,"Obstacles","Floor","Zombies", "Points" });
+            _selectedModule = GUI.Toolbar(new Rect(20, 10, 430, 20), _selectedModule, new string[] { "Level" ,"Obstacles","Floor","Zombies", "Points", "Player" });
             EditorGUILayout.Space(40);
 
             //Level
@@ -364,6 +373,42 @@ namespace LevelEditor {
                     Clear(layerPoints);
                 }
             }
+
+            //Player
+            if (_selectedModule == 5)
+            {
+                EditorGUILayout.LabelField("Description", EditorStyles.boldLabel);
+                EditorGUILayout.HelpBox(
+                    "1. Drag and drop on Scene prefub object with Layer 'Player'.\n" +
+                    "2. Prefub object should have the EditorObject script.\n" +
+                    "3. Press on button 'Save' to write JSON file current level state.\n",
+                    MessageType.None);
+
+                if (_isError)
+                    EditorGUILayout.LabelField(_errorMessage);
+                _directoryPath = EditorGUILayout.TextField("Directory:", _directoryPath);
+                EditorGUILayout.Space(10);
+                if (GUILayout.Button("Load"))
+                {
+                    int layerPlayer = LayerMask.NameToLayer("Player");
+                    Load(_directoryPath, layerPlayer);
+                }
+
+                EditorGUILayout.Space(10);
+                if (GUILayout.Button("Save"))
+                {
+                    int layerPlayer = LayerMask.NameToLayer("Player");
+                    Save(_directoryPath, layerPlayer);
+                }
+
+                EditorGUILayout.Space(10);
+                if (GUILayout.Button("Clear"))
+                {
+                    int layerPlayer = LayerMask.NameToLayer("Player");
+                    Clear(layerPlayer);
+                }
+            }
+
         }
 
         private void OnInspectorUpdate() => this.Repaint();
